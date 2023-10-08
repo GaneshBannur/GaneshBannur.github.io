@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-12-22T17:45:01+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ganesh Bannur</title><subtitle>Ganesh Bannur</subtitle><entry><title type="html">MODALS: Data augmentation that works for everyone</title><link href="http://localhost:4000/jekyll/update/2022/01/14/modals.html" rel="alternate" type="text/html" title="MODALS: Data augmentation that works for everyone" /><published>2022-01-14T00:00:00+05:30</published><updated>2022-01-14T00:00:00+05:30</updated><id>http://localhost:4000/jekyll/update/2022/01/14/modals</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/01/14/modals.html">&lt;p&gt;&lt;br /&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-08T22:25:48+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ganesh Bannur</title><subtitle>Ganesh Bannur</subtitle><entry><title type="html">Conversational Agents: A survey of techniques, frameworks and datasets</title><link href="http://localhost:4000/2022/11/01/ca-survey.html" rel="alternate" type="text/html" title="Conversational Agents: A survey of techniques, frameworks and datasets" /><published>2022-11-01T00:00:00+05:30</published><updated>2022-11-01T00:00:00+05:30</updated><id>http://localhost:4000/2022/11/01/ca-survey</id><content type="html" xml:base="http://localhost:4000/2022/11/01/ca-survey.html">&lt;p&gt;This post is a survey of conversational agents that I did when I was working to build one myself.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;architecture&quot;&gt;Architecture&lt;/h1&gt;
+&lt;p&gt;The general architecture of a conversational agent is given in &lt;em&gt;Figure 1&lt;/em&gt;. Traditional technqiues follow this architectural division closely and implement specialized modules for each component of the agent. However it is becoming increasingly common to combine one or more components in favour of more end-to-end conversational agents. This is especially true when using large deep learning models which are able to implement more than one component, often with better results due to information sharing between the tasks of indvidual components.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ca/architecture.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h4 align=&quot;center&quot;&gt;
+&lt;i&gt;Figure 1: Architecture of a Conversational Agent&lt;/i&gt;
+&lt;/h4&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;state-of-the-art-techniques&quot;&gt;State of the art techniques&lt;/h1&gt;
+&lt;p&gt;Here’s a survey of state-of-the-art techniques for building entire conversational agents or one or more individual modules shown in &lt;em&gt;Figure 1&lt;/em&gt;. All papers are linked in the table and also at the end. A few other interesting papers, papers on human-in-the-loop techniques and studies on building conversational agents are also linked at the end.&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/ca/Literature-Search.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/ca/Literature-Search.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h4&gt;State of the art techniques for each module&lt;/h4&gt;
+&lt;p&gt;Here is a grouping of papers based on which architectural component their techniques apply to. The key points of each paper are summarized.&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/ca/Papers-By-CA-Module.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/ca/Papers-By-CA-Module.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;frameworks&quot;&gt;Frameworks&lt;/h1&gt;
+&lt;p&gt;Frameworks are an important starting point for the development of a conversational agent as they can provide a standard data format, pretrained models, dailog system pipelines, etc. I ultimately chose Rasa to implement my conversational agent but there are many frameworks out there suited for a wide variety of tasks. Here’s a survey of the most popular platforms and frameworks available.&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/ca/Platforms-And-Tools.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/ca/Platforms-And-Tools.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;datasets&quot;&gt;Datasets&lt;/h1&gt;
+&lt;p&gt;Datasets are necessary for training custom models to use for language understanding/dialog management or for training end-to-end conversational agents. Good quality datasets are very important for dialog applications since the agent needs to produce good quality text in order to hold a satisfying conversation. Here is a survey of the most popular datasets available for training conversational agents.&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/ca/Datasets.pdf&quot;&gt;&lt;center&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/center&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/ca/Datasets.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;additional-notes-on-select-papers&quot;&gt;Additional notes on select papers&lt;/h1&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/ca/Paper-Notes.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/ca/Paper-Notes.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;further-reading&quot;&gt;Further Reading&lt;/h1&gt;
+&lt;p&gt;&lt;i&gt;Speech and Language Processing&lt;/i&gt; by &lt;i&gt;Dan Jurafsky&lt;/i&gt; and &lt;i&gt;James H. Martin&lt;/i&gt;&lt;br /&gt;
+Chapter 15: &lt;i&gt;Chatbots &amp;amp; Dialogue Systems&lt;/i&gt;&lt;br /&gt;
+&lt;a href=&quot;&quot;&gt;https://web.stanford.edu/~jurafsky/slp3/15.pdf&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;i&gt;Conversational Agents: Theory and Applications&lt;/i&gt; by &lt;i&gt;Mattias Wahde&lt;/i&gt; and &lt;i&gt;Marco Virgolin&lt;/i&gt;
+&lt;a href=&quot;&quot;&gt;https://browse.arxiv.org/pdf/2202.03164.pdf&lt;/a&gt;&lt;br /&gt;
+Here’s an extremely short summary of the key points they present.&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/ca/Conversational-Agents-Theory-and-Applications-Summary.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/ca/Conversational-Agents-Theory-and-Applications-Summary.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">This post is a survey of conversational agents that I did when I was working to build one myself. Architecture The general architecture of a conversational agent is given in Figure 1. Traditional technqiues follow this architectural division closely and implement specialized modules for each component of the agent. However it is becoming increasingly common to combine one or more components in favour of more end-to-end conversational agents. This is especially true when using large deep learning models which are able to implement more than one component, often with better results due to information sharing between the tasks of indvidual components.</summary></entry><entry><title type="html">MODALS: Data augmentation that works for everyone</title><link href="http://localhost:4000/jekyll/update/2022/01/14/modals.html" rel="alternate" type="text/html" title="MODALS: Data augmentation that works for everyone" /><published>2022-01-14T00:00:00+05:30</published><updated>2022-01-14T00:00:00+05:30</updated><id>http://localhost:4000/jekyll/update/2022/01/14/modals</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/01/14/modals.html">&lt;p&gt;&lt;br /&gt;
 In this blog we discuss the paper “MODALS: Modality-agnostic Automated Data Augmentation in the Latent Space”[1]
 &lt;br /&gt;
 &lt;br /&gt;
@@ -23,7 +84,7 @@ In order to be independent of modality, such a framework would have to convert d
 &lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;
 &lt;br /&gt;
-&lt;img src=&quot;http://localhost:4000/images/modals/PaperFig2.png&quot; alt=&quot;Figure 2 from the paper&quot; width=&quot;800&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/modals/PaperFig2.png&quot; alt=&quot;Figure 2 from the paper&quot; width=&quot;800&quot; /&gt;
 &lt;/p&gt;
 &lt;h3 align=&quot;center&quot;&gt;
 Figure: The MODALS framework (figure from paper)
@@ -38,7 +99,7 @@ Figure: The MODALS framework (figure from paper)
 In the figure below, the data point being considered is represented by \(\vec{\,a}\). \(q1\) through \(q5\) are five hard examples of the same class as \(\vec{\,a}\) and \(q3\) (represented by \(\vec{\,b}\)) is selected as it is the nearest to \(\vec{\,a}\) among the five. \(\vec{\,a}\) is interpolated towards \(\vec{\,b}\) with a scaling factor \(\lambda\) applied.
 &lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;
-&lt;img src=&quot;http://localhost:4000/images/modals/HardInterFig.png&quot; alt=&quot;Illustration of hard example interpolation&quot; width=&quot;800&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/modals/HardInterFig.png&quot; alt=&quot;Illustration of hard example interpolation&quot; width=&quot;800&quot; /&gt;
 &lt;/p&gt;
 &lt;h3 align=&quot;center&quot;&gt;
 Figure: Illustration of hard example interpolation
@@ -50,7 +111,7 @@ Figure: Illustration of hard example interpolation
 In the figure, the data point being considered is represented by \(\vec{\,a}\). The class center of \(\vec{\,a}\) is represented by \(\vec{\,b}\). \(\vec{\,a}\) is extrapolated away from \(\vec{\,b}\) by a factor \(\lambda\).
 &lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;
-&lt;img src=&quot;http://localhost:4000/images/modals/HardExtraFig.png&quot; alt=&quot;Illustration of hard example extrapolation&quot; width=&quot;800&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/modals/HardExtraFig.png&quot; alt=&quot;Illustration of hard example extrapolation&quot; width=&quot;800&quot; /&gt;
 &lt;/p&gt;
 &lt;h3 align=&quot;center&quot;&gt;
 Figure: Illustration of hard example extrapolation
@@ -62,7 +123,7 @@ Figure: Illustration of hard example extrapolation
 In the figure below, \(\vec{\,a}\) is the data point being considered and \(\vec{\,b}\), \(\vec{\,c}\) and \(\vec{\,d}\) are three points to which a may be transformed after adding Gaussian noise. The Gaussian noise which is scaled by a factor \(\lambda\) and added is shown as a circle.
 &lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;
-&lt;img src=&quot;http://localhost:4000/images/modals/GaussianFig.png&quot; alt=&quot;Illustration of addition of Gaussian noise&quot; width=&quot;800&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/modals/GaussianFig.png&quot; alt=&quot;Illustration of addition of Gaussian noise&quot; width=&quot;800&quot; /&gt;
 &lt;/p&gt;
 &lt;h3 align=&quot;center&quot;&gt;
 Figure: Illustration of addition of Gaussian noise
@@ -74,7 +135,7 @@ Figure: Illustration of addition of Gaussian noise
 The figure shows \(\vec{\,a}\) as the data point being considered and \(\vec{\,b}\) and \(\vec{\,c}\) are two randomly sampled points from the same class as \(\vec{\,a}\). The difference of \(\vec{\,b}\) and \(\vec{\,c}\) is added to \(\vec{\,a}\) to get the augmented point.
 &lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;
-&lt;img src=&quot;http://localhost:4000/images/modals/DiffTransform.png&quot; alt=&quot;Illustration of the difference transform&quot; width=&quot;800&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/modals/DiffTransform.png&quot; alt=&quot;Illustration of the difference transform&quot; width=&quot;800&quot; /&gt;
 &lt;/p&gt;
 &lt;h3 align=&quot;center&quot;&gt;
 Figure: Illustration of the difference transform
@@ -97,7 +158,7 @@ PBA searches for a good policy schedule which will give us optimized augmentatio
 There is reason to believe that this approach for finding a good policy schedule will work. The authors of [6] state that “… though the space of schedules is large, most good schedules are necessarily smooth and hence easily discoverable through evolutionary search algorithms such as PBT.”
 &lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;
-&lt;img src=&quot;http://localhost:4000/images/modals/PBAFig.png&quot; alt=&quot;The sequence of steps of PBA&quot; width=&quot;800&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/modals/PBAFig.png&quot; alt=&quot;The sequence of steps of PBA&quot; width=&quot;800&quot; /&gt;
 &lt;/p&gt;
 &lt;h3 align=&quot;center&quot;&gt;
 Figure: The sequence of steps of PBA
