@@ -1,4 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-08T23:51:21+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ganesh Bannur</title><subtitle>Ganesh Bannur</subtitle><entry><title type="html">Conversational Agents: A survey of techniques, frameworks and datasets</title><link href="http://localhost:4000/2022/11/01/ca-survey.html" rel="alternate" type="text/html" title="Conversational Agents: A survey of techniques, frameworks and datasets" /><published>2022-11-01T00:00:00+05:30</published><updated>2022-11-01T00:00:00+05:30</updated><id>http://localhost:4000/2022/11/01/ca-survey</id><content type="html" xml:base="http://localhost:4000/2022/11/01/ca-survey.html">&lt;p&gt;This post is a survey of conversational agents that I did when I was working to build one myself.&lt;br /&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-10T17:16:25+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ganesh Bannur</title><subtitle>Ganesh Bannur</subtitle><entry><title type="html">Survey of text detection and recognition</title><link href="http://localhost:4000/2023/05/28/text-survey.html" rel="alternate" type="text/html" title="Survey of text detection and recognition" /><published>2023-05-28T00:00:00+05:30</published><updated>2023-05-28T00:00:00+05:30</updated><id>http://localhost:4000/2023/05/28/text-survey</id><content type="html" xml:base="http://localhost:4000/2023/05/28/text-survey.html">&lt;p&gt;This post is a brief survey of the techniques in text detection and recognition.&lt;/p&gt;
+
+&lt;p&gt;Extracting text from images, called text spotting, is arguably the most important technique of extracting information from images. This is because text is the most dense representation of information present in images. Real-world scenes are rich in text and identifying the text present in a scene can vastly improve the understanding of the scene.&lt;/p&gt;
+
+&lt;p&gt;Traditionally text spotting has been divided into text detection and text recognition, both performed by separate methods. This is true even of recent deep learning methods. There are dedicated text detection and recognition models. Recently there has been an increased effort to train end-to-end text spotting models, which are single models that recognize the text in an image in one shot. These methods are expected to have better results due to information sharing between the tasks of detection and recognition. While these end-to-end methods are improving they are still behind pipelined methods which break the task down into detection and recognition. This is evidenced by [&lt;strong&gt;1&lt;/strong&gt;], in which they state&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;It’s widely believed that end-to-end models enjoy shared feature extraction which leads to better accuracy. However, the results of our competition say otherwise.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In that spirit the rest of this post gives surveys and comparisons of text detection and recognition techniques. However, keep in mind that only papers with official code implementations were considered since I was surveying techniques to integrate them into a pipeline.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;detection&quot;&gt;Detection&lt;/h1&gt;
+&lt;p&gt;I ultimately chose to use the unified detector since it produced the best results empirically. However the boundary transformer method is the best on paper and may be better in other scenarios. Here is a comparison of techniques on the same reference image along with the results from the corresponding paper.&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/text-survey/Text-Detection.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/text-survey/Text-Detection.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;recognition&quot;&gt;Recognition&lt;/h1&gt;
+&lt;p&gt;Here is a survey of text recognition techniques. The result tables for some highlight techniques are given.&lt;/p&gt;
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/text-survey/text-recognition.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/text-survey/text-recognition.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+&lt;p&gt;[1] Long, Shangbang, et al. “ICDAR 2023 Competition on Hierarchical Text Detection and Recognition.” arXiv preprint arXiv:2305.09750 (2023).&lt;/p&gt;</content><author><name></name></author><summary type="html">This post is a brief survey of the techniques in text detection and recognition.</summary></entry><entry><title type="html">Survey of vision and vision-language tasks for robots</title><link href="http://localhost:4000/2023/01/10/v-and-vl-survey.html" rel="alternate" type="text/html" title="Survey of vision and vision-language tasks for robots" /><published>2023-01-10T00:00:00+05:30</published><updated>2023-01-10T00:00:00+05:30</updated><id>http://localhost:4000/2023/01/10/v-and-vl-survey</id><content type="html" xml:base="http://localhost:4000/2023/01/10/v-and-vl-survey.html">&lt;p&gt;This is a survey of techniques and datasets for some vision and vision-language tasks. The survey was done on tasks which could be useful to a robot. A variety of tasks are explored:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;Extraction of relevant information from the surrounding scene&lt;/em&gt;&lt;/strong&gt;&lt;br /&gt;
+  This is done through the robot’s vision pipeline. Different extraction methods are applied on the robot’s video stream to extract different types of information from the scene. Object detection, event detection, human action detection and text detection and recognition are some of the key extraction methods applied. Text detection and recognition techniques are explored in more detail &lt;a href=&quot;/2023/01/10/v-and-vl-survey.html&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;
+  Retrieving extracted information based on natural language inputs provided by humans is also very important for a robot. Some techniques to retrieve objects in the scene based on their description are also explored.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;Navigation&lt;/em&gt;&lt;/strong&gt;&lt;br /&gt;
+  Navigation is a fundamental task for a robot. Recent techniques have explored navigation as a vision-language task in which the robot must navigate based on natural language commands and its video stream.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;Gaining visual knowledge&lt;/em&gt;&lt;/strong&gt;&lt;br /&gt;
+  In order to perform generic tasks such as zero-shot navigation in a new environment or visual-question answering based on the current scene, a robot must have large scale visual knowledge. A robot can either query an external knowledge base or accumulate knowledge in the parameters of a deep learning model. Recent work has explored the latter since end-to-end models with large scale visual knowledge perform better at visual tasks. Some papers proposing frameworks for large scale visual knowledge acquisition are explored.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;Miscellaneous&lt;/em&gt;&lt;/strong&gt;&lt;br /&gt;
+  Other interesting papers on datasets, custom architectures for video tasks, pretraining and finding specific moments in video are also surveyed.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Papers proposing techniques for these categories are listed. The key ideas put forth by papers in each category are summarized.&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/v-vl-survey/Vision-Query-Literature-Survey.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/v-vl-survey/Vision-Query-Literature-Survey.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here is a survey of datasets available for the tasks mentioned above.&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/v-vl-survey/Vision-Query-Datasets.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/v-vl-survey/Vision-Query-Datasets.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;predicting-the-future&quot;&gt;Predicting the future&lt;/h1&gt;
+&lt;p&gt;Humans are able to predict the future. Well, at least in the short term. We are able to judge facial expressions and predict what a person may do, observe movements and predict where a person is headed and in general predict future actions based on familiar visual cues received till now. Predicting the intent or next action of a human based on current and past video frames is crucial for robots to be proactive rather than reactive when interacting with humans. Predicting the short term (or even better - long term) goals of a person will let a robot take preemptive action. Current work focuses on video-based prediction as it is easy to acquire a video feed from a robot. [&lt;strong&gt;1&lt;/strong&gt;] justifies this by showing that video-based prediction is not inferior to using 3D kinematics, which is able to capture every dimension of human motion.&lt;/p&gt;
+
+&lt;p&gt;Here is a survey of techniques that have been used for predicting human actions and intents&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/v-vl-survey/Vision-Based-Intent.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/v-vl-survey/Vision-Based-Intent.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;And here are some datasets that exist for this task&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center&quot;&gt;
+    &lt;a href=&quot;/assets/v-vl-survey/Vision-Based-Intent-Datasets.pdf&quot;&gt;&lt;i&gt;Download the document or open it in a new tab&lt;/i&gt;&lt;/a&gt;
+    &lt;object data=&quot;/assets/v-vl-survey/Vision-Based-Intent-Datasets.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;1000&quot;&gt;&lt;/object&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+&lt;p&gt;[1] Zunino, Andrea, et al. “What will i do next? The intention from motion experiment.” Proceedings of the IEEE conference on computer vision and pattern recognition workshops. 2017.&lt;/p&gt;</content><author><name></name></author><summary type="html">This is a survey of techniques and datasets for some vision and vision-language tasks. The survey was done on tasks which could be useful to a robot. A variety of tasks are explored: Extraction of relevant information from the surrounding scene This is done through the robot’s vision pipeline. Different extraction methods are applied on the robot’s video stream to extract different types of information from the scene. Object detection, event detection, human action detection and text detection and recognition are some of the key extraction methods applied. Text detection and recognition techniques are explored in more detail here. Retrieving extracted information based on natural language inputs provided by humans is also very important for a robot. Some techniques to retrieve objects in the scene based on their description are also explored. Navigation Navigation is a fundamental task for a robot. Recent techniques have explored navigation as a vision-language task in which the robot must navigate based on natural language commands and its video stream. Gaining visual knowledge In order to perform generic tasks such as zero-shot navigation in a new environment or visual-question answering based on the current scene, a robot must have large scale visual knowledge. A robot can either query an external knowledge base or accumulate knowledge in the parameters of a deep learning model. Recent work has explored the latter since end-to-end models with large scale visual knowledge perform better at visual tasks. Some papers proposing frameworks for large scale visual knowledge acquisition are explored. Miscellaneous Other interesting papers on datasets, custom architectures for video tasks, pretraining and finding specific moments in video are also surveyed.</summary></entry><entry><title type="html">Conversational Agents: A survey of techniques, frameworks and datasets</title><link href="http://localhost:4000/2022/11/01/ca-survey.html" rel="alternate" type="text/html" title="Conversational Agents: A survey of techniques, frameworks and datasets" /><published>2022-11-01T00:00:00+05:30</published><updated>2022-11-01T00:00:00+05:30</updated><id>http://localhost:4000/2022/11/01/ca-survey</id><content type="html" xml:base="http://localhost:4000/2022/11/01/ca-survey.html">&lt;p&gt;This post is a survey of conversational agents that I did when I was working to build one myself.&lt;br /&gt;
 &lt;br /&gt;&lt;/p&gt;
 &lt;h1 id=&quot;architecture&quot;&gt;Architecture&lt;/h1&gt;
 &lt;p&gt;The general architecture of a conversational agent is given in &lt;em&gt;Figure 1&lt;/em&gt;. Traditional techniques follow this architectural division closely and implement specialized modules for each component of the agent. However it is becoming increasingly common to combine one or more components in favour of more end-to-end conversational agents. This is especially true when using large deep learning models as they are able to implement more than one component, often with better results due to information sharing between the tasks of individual components.&lt;/p&gt;

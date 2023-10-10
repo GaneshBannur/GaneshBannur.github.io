@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <title>Ganesh Bannur</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Survey of vision and vision-language tasks for robots | Ganesh Bannur</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Survey of vision and vision-language tasks for robots" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This is a survey of techniques and datasets for some vision and vision-language tasks. The survey was done on tasks which could be useful to a robot. A variety of tasks are explored: Extraction of relevant information from the surrounding scene This is done through the robot’s vision pipeline. Different extraction methods are applied on the robot’s video stream to extract different types of information from the scene. Object detection, event detection, human action detection and text detection and recognition are some of the key extraction methods applied. Text detection and recognition techniques are explored in more detail here. Retrieving extracted information based on natural language inputs provided by humans is also very important for a robot. Some techniques to retrieve objects in the scene based on their description are also explored. Navigation Navigation is a fundamental task for a robot. Recent techniques have explored navigation as a vision-language task in which the robot must navigate based on natural language commands and its video stream. Gaining visual knowledge In order to perform generic tasks such as zero-shot navigation in a new environment or visual-question answering based on the current scene, a robot must have large scale visual knowledge. A robot can either query an external knowledge base or accumulate knowledge in the parameters of a deep learning model. Recent work has explored the latter since end-to-end models with large scale visual knowledge perform better at visual tasks. Some papers proposing frameworks for large scale visual knowledge acquisition are explored. Miscellaneous Other interesting papers on datasets, custom architectures for video tasks, pretraining and finding specific moments in video are also surveyed." />
+<meta property="og:description" content="This is a survey of techniques and datasets for some vision and vision-language tasks. The survey was done on tasks which could be useful to a robot. A variety of tasks are explored: Extraction of relevant information from the surrounding scene This is done through the robot’s vision pipeline. Different extraction methods are applied on the robot’s video stream to extract different types of information from the scene. Object detection, event detection, human action detection and text detection and recognition are some of the key extraction methods applied. Text detection and recognition techniques are explored in more detail here. Retrieving extracted information based on natural language inputs provided by humans is also very important for a robot. Some techniques to retrieve objects in the scene based on their description are also explored. Navigation Navigation is a fundamental task for a robot. Recent techniques have explored navigation as a vision-language task in which the robot must navigate based on natural language commands and its video stream. Gaining visual knowledge In order to perform generic tasks such as zero-shot navigation in a new environment or visual-question answering based on the current scene, a robot must have large scale visual knowledge. A robot can either query an external knowledge base or accumulate knowledge in the parameters of a deep learning model. Recent work has explored the latter since end-to-end models with large scale visual knowledge perform better at visual tasks. Some papers proposing frameworks for large scale visual knowledge acquisition are explored. Miscellaneous Other interesting papers on datasets, custom architectures for video tasks, pretraining and finding specific moments in video are also surveyed." />
+<link rel="canonical" href="http://localhost:4000/2023/01/10/v-and-vl-survey.html" />
+<meta property="og:url" content="http://localhost:4000/2023/01/10/v-and-vl-survey.html" />
+<meta property="og:site_name" content="Ganesh Bannur" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-10T00:00:00+05:30" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Survey of vision and vision-language tasks for robots" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-10T00:00:00+05:30","datePublished":"2023-01-10T00:00:00+05:30","description":"This is a survey of techniques and datasets for some vision and vision-language tasks. The survey was done on tasks which could be useful to a robot. A variety of tasks are explored: Extraction of relevant information from the surrounding scene This is done through the robot’s vision pipeline. Different extraction methods are applied on the robot’s video stream to extract different types of information from the scene. Object detection, event detection, human action detection and text detection and recognition are some of the key extraction methods applied. Text detection and recognition techniques are explored in more detail here. Retrieving extracted information based on natural language inputs provided by humans is also very important for a robot. Some techniques to retrieve objects in the scene based on their description are also explored. Navigation Navigation is a fundamental task for a robot. Recent techniques have explored navigation as a vision-language task in which the robot must navigate based on natural language commands and its video stream. Gaining visual knowledge In order to perform generic tasks such as zero-shot navigation in a new environment or visual-question answering based on the current scene, a robot must have large scale visual knowledge. A robot can either query an external knowledge base or accumulate knowledge in the parameters of a deep learning model. Recent work has explored the latter since end-to-end models with large scale visual knowledge perform better at visual tasks. Some papers proposing frameworks for large scale visual knowledge acquisition are explored. Miscellaneous Other interesting papers on datasets, custom architectures for video tasks, pretraining and finding specific moments in video are also surveyed.","headline":"Survey of vision and vision-language tasks for robots","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/01/10/v-and-vl-survey.html"},"url":"http://localhost:4000/2023/01/10/v-and-vl-survey.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Ganesh Bannur" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Ganesh Bannur</a>
+    <a class="github-link" href="https://github.com/GaneshBannur">Github</a>
+    <style>
+      .github-link {
+        position: relative;
+        top: 19px;
+        left: 30px;
+      }
+    </style><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Survey of vision and vision-language tasks for robots</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-01-10T00:00:00+05:30" itemprop="datePublished">Jan 10, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This is a survey of techniques and datasets for some vision and vision-language tasks. The survey was done on tasks which could be useful to a robot. A variety of tasks are explored:</p>
+<ul>
+  <li><strong><em>Extraction of relevant information from the surrounding scene</em></strong><br />
+  This is done through the robot’s vision pipeline. Different extraction methods are applied on the robot’s video stream to extract different types of information from the scene. Object detection, event detection, human action detection and text detection and recognition are some of the key extraction methods applied. Text detection and recognition techniques are explored in more detail <a href="/2023/01/10/v-and-vl-survey.html">here</a>.<br />
+  Retrieving extracted information based on natural language inputs provided by humans is also very important for a robot. Some techniques to retrieve objects in the scene based on their description are also explored.</li>
+  <li><strong><em>Navigation</em></strong><br />
+  Navigation is a fundamental task for a robot. Recent techniques have explored navigation as a vision-language task in which the robot must navigate based on natural language commands and its video stream.</li>
+  <li><strong><em>Gaining visual knowledge</em></strong><br />
+  In order to perform generic tasks such as zero-shot navigation in a new environment or visual-question answering based on the current scene, a robot must have large scale visual knowledge. A robot can either query an external knowledge base or accumulate knowledge in the parameters of a deep learning model. Recent work has explored the latter since end-to-end models with large scale visual knowledge perform better at visual tasks. Some papers proposing frameworks for large scale visual knowledge acquisition are explored.</li>
+  <li><strong><em>Miscellaneous</em></strong><br />
+  Other interesting papers on datasets, custom architectures for video tasks, pretraining and finding specific moments in video are also surveyed.</li>
+</ul>
+
+<p>Papers proposing techniques for these categories are listed. The key ideas put forth by papers in each category are summarized.</p>
+
+<div style="text-align:center">
+    <a href="/assets/v-vl-survey/Vision-Query-Literature-Survey.pdf"><i>Download the document or open it in a new tab</i></a>
+    <object data="/assets/v-vl-survey/Vision-Query-Literature-Survey.pdf" type="application/pdf" width="100%" height="1000"></object>
+</div>
+<p><br /></p>
+
+<p>Here is a survey of datasets available for the tasks mentioned above.</p>
+
+<div style="text-align:center">
+    <a href="/assets/v-vl-survey/Vision-Query-Datasets.pdf"><i>Download the document or open it in a new tab</i></a>
+    <object data="/assets/v-vl-survey/Vision-Query-Datasets.pdf" type="application/pdf" width="100%" height="1000"></object>
+</div>
+<p><br /></p>
+
+<h1 id="predicting-the-future">Predicting the future</h1>
+<p>Humans are able to predict the future. Well, at least in the short term. We are able to judge facial expressions and predict what a person may do, observe movements and predict where a person is headed and in general predict future actions based on familiar visual cues received till now. Predicting the intent or next action of a human based on current and past video frames is crucial for robots to be proactive rather than reactive when interacting with humans. Predicting the short term (or even better - long term) goals of a person will let a robot take preemptive action. Current work focuses on video-based prediction as it is easy to acquire a video feed from a robot. [<strong>1</strong>] justifies this by showing that video-based prediction is not inferior to using 3D kinematics, which is able to capture every dimension of human motion.</p>
+
+<p>Here is a survey of techniques that have been used for predicting human actions and intents</p>
+
+<div style="text-align:center">
+    <a href="/assets/v-vl-survey/Vision-Based-Intent.pdf"><i>Download the document or open it in a new tab</i></a>
+    <object data="/assets/v-vl-survey/Vision-Based-Intent.pdf" type="application/pdf" width="100%" height="1000"></object>
+</div>
+<p><br /></p>
+
+<p>And here are some datasets that exist for this task</p>
+
+<div style="text-align:center">
+    <a href="/assets/v-vl-survey/Vision-Based-Intent-Datasets.pdf"><i>Download the document or open it in a new tab</i></a>
+    <object data="/assets/v-vl-survey/Vision-Based-Intent-Datasets.pdf" type="application/pdf" width="100%" height="1000"></object>
+</div>
+<p><br /></p>
+
+<h1 id="references">References</h1>
+<p>[1] Zunino, Andrea, et al. “What will i do next? The intention from motion experiment.” Proceedings of the IEEE conference on computer vision and pattern recognition workshops. 2017.</p>
+
+  </div><a class="u-url" href="/2023/01/10/v-and-vl-survey.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/GaneshBannur"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">GaneshBannur</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Ganesh Bannur</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
