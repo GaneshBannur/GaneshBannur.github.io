@@ -34,6 +34,6 @@ Here is a survey of text recognition techniques. The result tables for some inte
 <br>
 
 # References
-[1] Long, Shangbang, et al. "ICDAR 2023 Competition on Hierarchical Text Detection and Recognition." arXiv preprint arXiv:2305.09750 (2023).
-[2] Long, Shangbang, et al. "Towards end-to-end unified scene text detection and layout analysis." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2022.
-[3] Zhang, Shi-Xue, et al. "Arbitrary shape text detection via boundary transformer." IEEE Transactions on Multimedia (2023).
+[1] Long, Shangbang, et al. "ICDAR 2023 Competition on Hierarchical Text Detection and Recognition." arXiv preprint arXiv:2305.09750 (2023).  
+[2] Long, Shangbang, et al. "Towards end-to-end unified scene text detection and layout analysis." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2022.  
+[3] Zhang, Shi-Xue, et al. "Arbitrary shape text detection via boundary transformer." IEEE Transactions on Multimedia (2023).  
