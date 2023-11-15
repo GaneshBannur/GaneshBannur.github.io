@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <title>Ganesh Bannur</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>The (lack of) constraints on MJRTY | Ganesh Bannur</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="The (lack of) constraints on MJRTY" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back." />
+<meta property="og:description" content="The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back." />
+<link rel="canonical" href="http://localhost:4000/2023/11/14/mjrty.html" />
+<meta property="og:url" content="http://localhost:4000/2023/11/14/mjrty.html" />
+<meta property="og:site_name" content="Ganesh Bannur" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-14T00:00:00+05:30" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="The (lack of) constraints on MJRTY" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-14T00:00:00+05:30","datePublished":"2023-11-14T00:00:00+05:30","description":"The MJRTY algorithm, proposed in \\([1]\\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back.","headline":"The (lack of) constraints on MJRTY","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/11/14/mjrty.html"},"url":"http://localhost:4000/2023/11/14/mjrty.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Ganesh Bannur" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Ganesh Bannur</a>
+    <a class="github-link" href="https://github.com/GaneshBannur">Github</a>
+    <style>
+      .github-link {
+        position: relative;
+        top: 19px;
+        left: 30px;
+      }
+    </style><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">The (lack of) constraints on MJRTY</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-11-14T00:00:00+05:30" itemprop="datePublished">Nov 14, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (<a href="/assets/mjrty/paper.pdf"><i>here</i></a>) and come back.</p>
+
+<p>The paper uses a theorem-prover to prove the correctness of the Fortran implementation of MJRTY. To feed into the theorem-prover, they define the constraints imposed on the algorithm. Two constraints are of interest to us: Constraint \((3)\) and Constraint \((5)\).</p>
+
+<p>A few preliminaries</p>
+<ul>
+  <li>\(A\) is the array of elements whose majority element we want</li>
+  <li>\(i\) is the current index we are looking at</li>
+  <li>\(cand\) is the majority element in \(A[1...i]\) (or just some element if \(A[1...i]\) doesn’t have a majority)</li>
+  <li>\(k\) is the number of instances of \(cand\) in \(A[1...i]\) which remain after pairing up dissimilar elements in \(A[1...i]\) and cancelling them out, according to the MJRTY algorithm.</li>
+</ul>
+
+<p>Constraint \((3)\)</p>
+<blockquote>
+  <p>The number of times \(cand\) occurs in \(A\) from \(1\) through \(i\) is at least \(k\).</p>
+</blockquote>
+
+<p>Constraint \((3)\) says that there are at least \(k\) instances of \(cand\) in \(A[1...i]\), i.e., \(k\) is either an underestimation or correct estimation of the number of instances of \(cand\). It is an underestimation when some instances of \(cand\) have been paired up with a dissimilar element and have not contributed to \(k\).</p>
+
+<p>Constraint \((5)\)</p>
+<blockquote>
+  <p>For all \(x\) other than \(cand\), the number of times \(x\) occurs in \(A\) from \(1\) through \(i\) is no greater than \(\frac{(i-k)}{2}\).</p>
+</blockquote>
+
+<p>Constraint \((5)\) follows obviously when we split the elements of \(A[1...i]\) into two groups (as they do in \([1]\)), the “unanimous group” and the “majority-free group”. The unanimous group has the \(k\) instances of \(cand\) which haven’t been paired up (so they unanimously vote for \(cand\)) and the majority-free group has the remaining elements. There are \(i-k\) elements in the majority-free group and since each element here must be paired up with a dissimilar element, there can be no more than \(\frac{(i-k)}{2}\) elements of the same kind.</p>
+
+<p>We can rephrase constraint \((5)\) as</p>
+<blockquote>
+  <p>Let \(s\) be the element, other than \(cand\), which has the most number of instances in \(A[1...i]\) (if \(cand\) is the majority element of \(A[1...i]\) then \(s\) will be the element with the second most number of instances in \(A[1...i]\), otherwise \(s\) will be the element with the most instances). The number of instances of \(s\) is \(\le \frac{(i-k)}{2}\). If there are two or more elements which satisfy the condition for \(s\) then this must apply to all of them.</p>
+</blockquote>
+
+<p>This phrasing is equivalent to constraint \((5)\) since, by the definition of \(s\), it has more instances than any other element in \(A[1...i]\) (leaving out \(cand\)). If s has less than \(\frac{(i-k)}{2}\) instances so will the others. From here on we use this rephrasing rather than the original constraint.</p>
+
+<p>\([1]\) provides a Fortran implementation of MJRTY in which they perform one small optimization over the algorithm. Once the array has been scanned and the so-called “pairing” phase is done, the program checks the value of \(k\) to see if it is \(&gt;\frac{n}{2}\). If it is then they skip the “counting” phase since \(k\), a possible underestimation of the number of instances of \(cand\), already tells us that there are at least \(\frac{n}{2}+1\) instances of \(cand\). This trick is important later.</p>
+
+<p>Using the constraints defined, \([1]\) proves that the Fortran implementation of MJRTY is correct. However they state this</p>
+<blockquote>
+  <p>Nevertheless, if one modifies the code so that \(k\) is not tested against \(\frac{n}{2}\) before entering the counting phase, one can omit conjunct \((3)\) of this invariant. That is, unless the program exits early when \(k\) exceeds \(\frac{n}{2}\), a demon within the first loop is permitted to raise \(k\) above the count of \(cand\) (within the constraint imposed by \((5)\)) without causing the algorithm to perform incorrectly. We do not know how to interpret this lack of constraint.</p>
+</blockquote>
+
+<p>Even the authors can’t tell us why constraint \((3)\) can be removed while adhering to constraint \((5)\). This demon must know something we don’t.<br />
+<br /></p>
+<h1 id="interpreting">Interpreting</h1>
+<p>One thing we need to get out of the way is why \(k\) should not be tested against \(\frac{n}{2}\) if we wish to remove constraint \((3)\). This is because normally there are at least \(k\) instances of \(cand\). If \(k&gt;\frac{n}{2}\) then there must be at least \(\frac{n}{2}+1\) instances of \(cand\) so it is guaranteed to be the majority element and we don’t have to perform the counting phase to verify this (the “trick” we discussed before). But if we raise the value of \(k\) (without affecting the result of the algorithm) then we can no longer be sure that there are at least \(k\) instances of \(cand\) and so we must never skip the counting phase.</p>
+
+<p>Now onto the real deal. Why can we remove constraint \((3)\) while adhering to constraint \((5)\)?</p>
+
+<p>While the algorithm is executing and has just examined position \(i\) in \(A\), \(cand\) either</p>
+<ul>
+  <li>holds the majority in element in \(A[1...i]\) if \(A[1...i]\) has a majority element</li>
+  <li>holds some element if \(A[1...i]\) does not have a majority element</li>
+</ul>
+
+<p>Let</p>
+<ul>
+  <li>\(m\) be the majority element in \(A\)</li>
+  <li>\(s\) be the element which we defined in the rephrasing of constraint \((5)\).</li>
+  <li>\(N(x)\) denote the number of instances of \(x\) <span style="color:brown"><strong><em>in \(A[1...i]\)</em></strong></span>.</li>
+</ul>
+
+<p>We say an array \(B\) is <em>equivalent in terms of majority</em> to the array \(A\) if \(B\) has the same majority element as \(A\) (or no majority element if \(A\) has none).<br />
+At any point of the algorithm we can create an array \(B\) by replacing all elements in \(A[1...i]\), other than \(m\), by \(cand\). Created this way, \(B\) will be <em>equivalent in terms of majority</em> to \(A\) since we are not replacing any instances of \(m\) and \(m\) still remains the majority element. Let \(k'\) be the value of \(k\) we would get by applying MJRTY on \(B[1...i]\). Since we are replacing other elements with \(cand\) in \(A[1...i]\) to get \(B[1...i]\) we have \(k'\ge k\). They will be equal if there are no elements in \(A[1...i]\) other than \(m\) and \(cand\).</p>
+
+<p>Now we can let the algorithm continue its execution from position \(i\) in \(B\) and it will yield \(m\) itself as the majority element. Converting \(A\) to \(B\) and continuing on \(B\) is equivalent to simply raising the value of \(k\) to \(k'\) and continuing on \(A\). This is why the value of \(k\) can be raised without affecting the result of the algorithm. Depending on how many replacements we can perform, \(k'\) may be more than \(N(cand)\) in which case constraint \((3)\) would need to be removed to allow this.</p>
+
+<p>This method may actually let us raise the value of \(k\) by more than what removing constraint \((3)\) while adhering to constraint \((5)\), will allow. To see why let’s consider the two possibilities</p>
+<ul>
+  <li>
+    <p>\(s=m\)<br />
+In this case the method I have described degenerates to removing constraint \((3)\). Consider the array \(B\) that we constructed. In \(B[1...i]\) we pair each instance of \(m\) with an instance of \(cand\) and the remaining instances of \(cand\) contribute to \(k'\). \(N(m) = \frac{(i-k')}{2}\) since there are \(i-k'\) paired elements and half of them will be instances of \(m\). So we are adhering to constraint \((5)\) since \(N(s) = \frac{(i-k')}{2} =&gt; N(s) \le \frac{(i-k)}{2}\). We are able to increase \(k\) to \(k' = i - 2 \times N(s)\).</p>
+  </li>
+  <li>
+    <p>\(s \ne m\)<br />
+Considering array \(B\) again, we pair each instance of \(m\) with an instance of \(cand\) and the remaining instances of \(cand\) contribute to \(k'\). However this time we are not adhering to constraint \((5)\) since we are replacing \(s\) by \(cand\). Since, apart from \(cand\), \(B\) only has instances of \(m\), we require that \(m\) (and not \(s\)) must pair with instances of \(cand\). And since \(N(m) \le N(s)\) (equal if \(m\) and the element chosen for \(s\) have the same number of instances) and \(N(m) = \frac{(i-k')}{2}\) we get \(N(s) \ge \frac{(i-k')}{2}\). So \(N(s)\) may be \(&gt;\frac{(i-k)}{2}\) and we may violate constraint \((5)\). In this case we have increased \(k\) by more than if we had adhered to constraint \((5)\). We are able to increase \(k\) to \(k' = i - 2 \times N(m)\). Adhering to constraint \((5)\) would have let us increase \(k\) to just \(k' = i - 2 \times N(s)\).</p>
+  </li>
+</ul>
+
+<p>In either case we get \(k' = i - 2 \times N(m)\). Removing constraint \((3)\) permits us to raise \(k\) above \(N(cand)\). But this can only happen when \(k'&gt;N(cand) =&gt; i - 2 \times N(m)&gt;N(cand) =&gt; N(m) &lt; \frac{i - N(cand)}{2}\).</p>
+
+<details>
+<summary>Note: Sometimes we can do even better than this (click to reveal)</summary>
+<br />
+We can increase \(k\) past the previous method if we know \(A[i+1...n]\). In this case we can even replace some instances of \(m\) with \(cand\) in \(B[1...i]\). We just have to make sure that \(B[i+1...n]\) has the correct elements to give the right answer. For example:  
+$$A:\ [a\ e\ c\ e\ f\ |\ e\ e\ e\ b\ e\ e\ e\ d]\quad i = 5,\ cand = f,\ k = 1,\ m = e$$
+We can replace everything in \(A[1...5]\), even \(e\), to get  
+$$B:\ [f\ f\ f\ f\ f\ |\ e\ e\ e\ b\ e\ e\ e\ d]\quad i = 5,\ cand = f,\ k' = 5, m = e$$  
+Continuing from \(B\) will still give us \(e\) as the final result even though we replaced \(e\) with \(f\). Note that it is not just the number of instances of \(m\) in \(B[i+1...n]\) but also the order that we have to take into account. For example if we had  
+$$A:\ [a\ e\ c\ e\ f\ |\ e\ e\ e\ e\ e\ b\ e\ d]\quad i = 5,\ cand = f,\ k = 1,\ m = e$$  
+Replacing we would get  
+$$B:\ [f\ f\ f\ f\ f\ |\ e\ e\ e\ e\ e\ b\ e\ d]\quad i = 5,\ cand = f,\ k' = 5,\ m = e$$  
+But this would give the wrong final result, \(d\).  
+So this method is finicky and requires us to know \(A[i+1...n]\) completely. But the method described earlier only requires us to know \(m\) and does not need any information on \(A[i+1...n]\).
+</details>
+<p><br /></p>
+<h1 id="we-did-it--right">We Did It! ….. Right?</h1>
+<p>We’ve managed to do better than what the paper tells us we can by removing constraint \((3)\). We did it!<br />
+There’s a <strong><em>tiny</em></strong> problem:<br />
+We assumed that we know the majority element \(m\), the very thing the algorithm is trying to find! 😑</p>
+
+<p>In reality we don’t know \(m\) and so we can’t calculate \(k' = i - 2 \times N(m)\). Raising \(k\) to \(k' = i - 2 \times N(m)\) would have allowed us to continue the algorithm without changing the result. But in the absence of \(N(m)\) the best we can do is to raise \(k\) to \(k' = i - 2 \times N(s)\). This is guaranteed to not change the result since \(N(m) \le N(s)\) and so \(i - 2 \times N(m) \ge i - 2 \times N(s)\), i.e., if raising to \(i - 2 \times N(m)\) won’t affect the result, raising it to a smaller value (\(i - 2 \times N(s)\)) certainly won’t. Raising \(k\) to \(k' = i - 2 \times N(s)\) gives \(N(s) = \frac{(i-k')}{2}\) and so constraint \((5)\) is satisfied even after raising \(k\) to \(k'\).<br />
+Finally, removing constraint \((3)\) permits us to raise \(k\) above \(N(cand)\). But this can only happen when \(k'&gt;N(cand) =&gt; i - 2 \times N(s)&gt;N(cand) =&gt; N(s) &lt; \frac{i - N(cand)}{2}\).</p>
+
+<p>We now know why we can remove constraint \((3)\) by raising \(k\) while adhering to constraint \((5)\). The demon’s got nothing on us.<br />
+<br /><br /><br /><br />
+If you see any issues please let me know by filing an issue at <a href="https://github.com/GaneshBannur/ganeshbannur.github.io/issues">https://github.com/GaneshBannur/ganeshbannur.github.io/issues</a>.
+<br /><br /></p>
+<h1 id="references">References</h1>
+<p>\([1]\) Boyer, Robert S., and J. Strother Moore. “MJRTY—a fast majority vote algorithm.” Automated reasoning: essays in honor of Woody Bledsoe. Dordrecht: Springer Netherlands, 1991. 105-117.</p>
+
+  </div><a class="u-url" href="/2023/11/14/mjrty.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/GaneshBannur"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">GaneshBannur</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Ganesh Bannur</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

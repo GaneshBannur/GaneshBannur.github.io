@@ -1,4 +1,111 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-10T22:17:36+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ganesh Bannur</title><subtitle>Ganesh Bannur</subtitle><entry><title type="html">Survey of text detection and recognition</title><link href="http://localhost:4000/2023/05/28/text-survey.html" rel="alternate" type="text/html" title="Survey of text detection and recognition" /><published>2023-05-28T00:00:00+05:30</published><updated>2023-05-28T00:00:00+05:30</updated><id>http://localhost:4000/2023/05/28/text-survey</id><content type="html" xml:base="http://localhost:4000/2023/05/28/text-survey.html">&lt;p&gt;This post is a brief survey of the techniques in text detection and recognition.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-11-15T19:59:10+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ganesh Bannur</title><subtitle>Ganesh Bannur</subtitle><entry><title type="html">The (lack of) constraints on MJRTY</title><link href="http://localhost:4000/2023/11/14/mjrty.html" rel="alternate" type="text/html" title="The (lack of) constraints on MJRTY" /><published>2023-11-14T00:00:00+05:30</published><updated>2023-11-14T00:00:00+05:30</updated><id>http://localhost:4000/2023/11/14/mjrty</id><content type="html" xml:base="http://localhost:4000/2023/11/14/mjrty.html">&lt;p&gt;The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (&lt;a href=&quot;/assets/mjrty/paper.pdf&quot;&gt;&lt;i&gt;here&lt;/i&gt;&lt;/a&gt;) and come back.&lt;/p&gt;
+
+&lt;p&gt;The paper uses a theorem-prover to prove the correctness of the Fortran implementation of MJRTY. To feed into the theorem-prover, they define the constraints imposed on the algorithm. Two constraints are of interest to us: Constraint \((3)\) and Constraint \((5)\).&lt;/p&gt;
+
+&lt;p&gt;A few preliminaries&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;\(A\) is the array of elements whose majority element we want&lt;/li&gt;
+  &lt;li&gt;\(i\) is the current index we are looking at&lt;/li&gt;
+  &lt;li&gt;\(cand\) is the majority element in \(A[1...i]\) (or just some element if \(A[1...i]\) doesn’t have a majority)&lt;/li&gt;
+  &lt;li&gt;\(k\) is the number of instances of \(cand\) in \(A[1...i]\) which remain after pairing up dissimilar elements in \(A[1...i]\) and cancelling them out, according to the MJRTY algorithm.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Constraint \((3)\)&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;The number of times \(cand\) occurs in \(A\) from \(1\) through \(i\) is at least \(k\).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Constraint \((3)\) says that there are at least \(k\) instances of \(cand\) in \(A[1...i]\), i.e., \(k\) is either an underestimation or correct estimation of the number of instances of \(cand\). It is an underestimation when some instances of \(cand\) have been paired up with a dissimilar element and have not contributed to \(k\).&lt;/p&gt;
+
+&lt;p&gt;Constraint \((5)\)&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;For all \(x\) other than \(cand\), the number of times \(x\) occurs in \(A\) from \(1\) through \(i\) is no greater than \(\frac{(i-k)}{2}\).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Constraint \((5)\) follows obviously when we split the elements of \(A[1...i]\) into two groups (as they do in \([1]\)), the “unanimous group” and the “majority-free group”. The unanimous group has the \(k\) instances of \(cand\) which haven’t been paired up (so they unanimously vote for \(cand\)) and the majority-free group has the remaining elements. There are \(i-k\) elements in the majority-free group and since each element here must be paired up with a dissimilar element, there can be no more than \(\frac{(i-k)}{2}\) elements of the same kind.&lt;/p&gt;
+
+&lt;p&gt;We can rephrase constraint \((5)\) as&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Let \(s\) be the element, other than \(cand\), which has the most number of instances in \(A[1...i]\) (if \(cand\) is the majority element of \(A[1...i]\) then \(s\) will be the element with the second most number of instances in \(A[1...i]\), otherwise \(s\) will be the element with the most instances). The number of instances of \(s\) is \(\le \frac{(i-k)}{2}\). If there are two or more elements which satisfy the condition for \(s\) then this must apply to all of them.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This phrasing is equivalent to constraint \((5)\) since, by the definition of \(s\), it has more instances than any other element in \(A[1...i]\) (leaving out \(cand\)). If s has less than \(\frac{(i-k)}{2}\) instances so will the others. From here on we use this rephrasing rather than the original constraint.&lt;/p&gt;
+
+&lt;p&gt;\([1]\) provides a Fortran implementation of MJRTY in which they perform one small optimization over the algorithm. Once the array has been scanned and the so-called “pairing” phase is done, the program checks the value of \(k\) to see if it is \(&amp;gt;\frac{n}{2}\). If it is then they skip the “counting” phase since \(k\), a possible underestimation of the number of instances of \(cand\), already tells us that there are at least \(\frac{n}{2}+1\) instances of \(cand\). This trick is important later.&lt;/p&gt;
+
+&lt;p&gt;Using the constraints defined, \([1]\) proves that the Fortran implementation of MJRTY is correct. However they state this&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Nevertheless, if one modifies the code so that \(k\) is not tested against \(\frac{n}{2}\) before entering the counting phase, one can omit conjunct \((3)\) of this invariant. That is, unless the program exits early when \(k\) exceeds \(\frac{n}{2}\), a demon within the first loop is permitted to raise \(k\) above the count of \(cand\) (within the constraint imposed by \((5)\)) without causing the algorithm to perform incorrectly. We do not know how to interpret this lack of constraint.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Even the authors can’t tell us why constraint \((3)\) can be removed while adhering to constraint \((5)\). This demon must know something we don’t.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;interpreting&quot;&gt;Interpreting&lt;/h1&gt;
+&lt;p&gt;One thing we need to get out of the way is why \(k\) should not be tested against \(\frac{n}{2}\) if we wish to remove constraint \((3)\). This is because normally there are at least \(k\) instances of \(cand\). If \(k&amp;gt;\frac{n}{2}\) then there must be at least \(\frac{n}{2}+1\) instances of \(cand\) so it is guaranteed to be the majority element and we don’t have to perform the counting phase to verify this (the “trick” we discussed before). But if we raise the value of \(k\) (without affecting the result of the algorithm) then we can no longer be sure that there are at least \(k\) instances of \(cand\) and so we must never skip the counting phase.&lt;/p&gt;
+
+&lt;p&gt;Now onto the real deal. Why can we remove constraint \((3)\) while adhering to constraint \((5)\)?&lt;/p&gt;
+
+&lt;p&gt;While the algorithm is executing and has just examined position \(i\) in \(A\), \(cand\) either&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;holds the majority in element in \(A[1...i]\) if \(A[1...i]\) has a majority element&lt;/li&gt;
+  &lt;li&gt;holds some element if \(A[1...i]\) does not have a majority element&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;\(m\) be the majority element in \(A\)&lt;/li&gt;
+  &lt;li&gt;\(s\) be the element which we defined in the rephrasing of constraint \((5)\).&lt;/li&gt;
+  &lt;li&gt;\(N(x)\) denote the number of instances of \(x\) &lt;span style=&quot;color:brown&quot;&gt;&lt;strong&gt;&lt;em&gt;in \(A[1...i]\)&lt;/em&gt;&lt;/strong&gt;&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We say an array \(B\) is &lt;em&gt;equivalent in terms of majority&lt;/em&gt; to the array \(A\) if \(B\) has the same majority element as \(A\) (or no majority element if \(A\) has none).&lt;br /&gt;
+At any point of the algorithm we can create an array \(B\) by replacing all elements in \(A[1...i]\), other than \(m\), by \(cand\). Created this way, \(B\) will be &lt;em&gt;equivalent in terms of majority&lt;/em&gt; to \(A\) since we are not replacing any instances of \(m\) and \(m\) still remains the majority element. Let \(k&apos;\) be the value of \(k\) we would get by applying MJRTY on \(B[1...i]\). Since we are replacing other elements with \(cand\) in \(A[1...i]\) to get \(B[1...i]\) we have \(k&apos;\ge k\). They will be equal if there are no elements in \(A[1...i]\) other than \(m\) and \(cand\).&lt;/p&gt;
+
+&lt;p&gt;Now we can let the algorithm continue its execution from position \(i\) in \(B\) and it will yield \(m\) itself as the majority element. Converting \(A\) to \(B\) and continuing on \(B\) is equivalent to simply raising the value of \(k\) to \(k&apos;\) and continuing on \(A\). This is why the value of \(k\) can be raised without affecting the result of the algorithm. Depending on how many replacements we can perform, \(k&apos;\) may be more than \(N(cand)\) in which case constraint \((3)\) would need to be removed to allow this.&lt;/p&gt;
+
+&lt;p&gt;This method may actually let us raise the value of \(k\) by more than what removing constraint \((3)\) while adhering to constraint \((5)\), will allow. To see why let’s consider the two possibilities&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;\(s=m\)&lt;br /&gt;
+In this case the method I have described degenerates to removing constraint \((3)\). Consider the array \(B\) that we constructed. In \(B[1...i]\) we pair each instance of \(m\) with an instance of \(cand\) and the remaining instances of \(cand\) contribute to \(k&apos;\). \(N(m) = \frac{(i-k&apos;)}{2}\) since there are \(i-k&apos;\) paired elements and half of them will be instances of \(m\). So we are adhering to constraint \((5)\) since \(N(s) = \frac{(i-k&apos;)}{2} =&amp;gt; N(s) \le \frac{(i-k)}{2}\). We are able to increase \(k\) to \(k&apos; = i - 2 \times N(s)\).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;\(s \ne m\)&lt;br /&gt;
+Considering array \(B\) again, we pair each instance of \(m\) with an instance of \(cand\) and the remaining instances of \(cand\) contribute to \(k&apos;\). However this time we are not adhering to constraint \((5)\) since we are replacing \(s\) by \(cand\). Since, apart from \(cand\), \(B\) only has instances of \(m\), we require that \(m\) (and not \(s\)) must pair with instances of \(cand\). And since \(N(m) \le N(s)\) (equal if \(m\) and the element chosen for \(s\) have the same number of instances) and \(N(m) = \frac{(i-k&apos;)}{2}\) we get \(N(s) \ge \frac{(i-k&apos;)}{2}\). So \(N(s)\) may be \(&amp;gt;\frac{(i-k)}{2}\) and we may violate constraint \((5)\). In this case we have increased \(k\) by more than if we had adhered to constraint \((5)\). We are able to increase \(k\) to \(k&apos; = i - 2 \times N(m)\). Adhering to constraint \((5)\) would have let us increase \(k\) to just \(k&apos; = i - 2 \times N(s)\).&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In either case we get \(k&apos; = i - 2 \times N(m)\). Removing constraint \((3)\) permits us to raise \(k\) above \(N(cand)\). But this can only happen when \(k&apos;&amp;gt;N(cand) =&amp;gt; i - 2 \times N(m)&amp;gt;N(cand) =&amp;gt; N(m) &amp;lt; \frac{i - N(cand)}{2}\).&lt;/p&gt;
+
+&lt;details&gt;
+&lt;summary&gt;Note: Sometimes we can do even better than this (click to reveal)&lt;/summary&gt;
+&lt;br /&gt;
+We can increase \(k\) past the previous method if we know \(A[i+1...n]\). In this case we can even replace some instances of \(m\) with \(cand\) in \(B[1...i]\). We just have to make sure that \(B[i+1...n]\) has the correct elements to give the right answer. For example:  
+$$A:\ [a\ e\ c\ e\ f\ |\ e\ e\ e\ b\ e\ e\ e\ d]\quad i = 5,\ cand = f,\ k = 1,\ m = e$$
+We can replace everything in \(A[1...5]\), even \(e\), to get  
+$$B:\ [f\ f\ f\ f\ f\ |\ e\ e\ e\ b\ e\ e\ e\ d]\quad i = 5,\ cand = f,\ k&apos; = 5, m = e$$  
+Continuing from \(B\) will still give us \(e\) as the final result even though we replaced \(e\) with \(f\). Note that it is not just the number of instances of \(m\) in \(B[i+1...n]\) but also the order that we have to take into account. For example if we had  
+$$A:\ [a\ e\ c\ e\ f\ |\ e\ e\ e\ e\ e\ b\ e\ d]\quad i = 5,\ cand = f,\ k = 1,\ m = e$$  
+Replacing we would get  
+$$B:\ [f\ f\ f\ f\ f\ |\ e\ e\ e\ e\ e\ b\ e\ d]\quad i = 5,\ cand = f,\ k&apos; = 5,\ m = e$$  
+But this would give the wrong final result, \(d\).  
+So this method is finicky and requires us to know \(A[i+1...n]\) completely. But the method described earlier only requires us to know \(m\) and does not need any information on \(A[i+1...n]\).
+&lt;/details&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;we-did-it--right&quot;&gt;We Did It! ….. Right?&lt;/h1&gt;
+&lt;p&gt;We’ve managed to do better than what the paper tells us we can by removing constraint \((3)\). We did it!&lt;br /&gt;
+There’s a &lt;strong&gt;&lt;em&gt;tiny&lt;/em&gt;&lt;/strong&gt; problem:&lt;br /&gt;
+We assumed that we know the majority element \(m\), the very thing the algorithm is trying to find! 😑&lt;/p&gt;
+
+&lt;p&gt;In reality we don’t know \(m\) and so we can’t calculate \(k&apos; = i - 2 \times N(m)\). Raising \(k\) to \(k&apos; = i - 2 \times N(m)\) would have allowed us to continue the algorithm without changing the result. But in the absence of \(N(m)\) the best we can do is to raise \(k\) to \(k&apos; = i - 2 \times N(s)\). This is guaranteed to not change the result since \(N(m) \le N(s)\) and so \(i - 2 \times N(m) \ge i - 2 \times N(s)\), i.e., if raising to \(i - 2 \times N(m)\) won’t affect the result, raising it to a smaller value (\(i - 2 \times N(s)\)) certainly won’t. Raising \(k\) to \(k&apos; = i - 2 \times N(s)\) gives \(N(s) = \frac{(i-k&apos;)}{2}\) and so constraint \((5)\) is satisfied even after raising \(k\) to \(k&apos;\).&lt;br /&gt;
+Finally, removing constraint \((3)\) permits us to raise \(k\) above \(N(cand)\). But this can only happen when \(k&apos;&amp;gt;N(cand) =&amp;gt; i - 2 \times N(s)&amp;gt;N(cand) =&amp;gt; N(s) &amp;lt; \frac{i - N(cand)}{2}\).&lt;/p&gt;
+
+&lt;p&gt;We now know why we can remove constraint \((3)\) by raising \(k\) while adhering to constraint \((5)\). The demon’s got nothing on us.&lt;br /&gt;
+&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;
+If you see any issues please let me know by filing an issue at &lt;a href=&quot;https://github.com/GaneshBannur/ganeshbannur.github.io/issues&quot;&gt;https://github.com/GaneshBannur/ganeshbannur.github.io/issues&lt;/a&gt;.
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+&lt;p&gt;\([1]\) Boyer, Robert S., and J. Strother Moore. “MJRTY—a fast majority vote algorithm.” Automated reasoning: essays in honor of Woody Bledsoe. Dordrecht: Springer Netherlands, 1991. 105-117.&lt;/p&gt;</content><author><name></name></author><summary type="html">The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back.</summary></entry><entry><title type="html">Survey of text detection and recognition</title><link href="http://localhost:4000/2023/05/28/text-survey.html" rel="alternate" type="text/html" title="Survey of text detection and recognition" /><published>2023-05-28T00:00:00+05:30</published><updated>2023-05-28T00:00:00+05:30</updated><id>http://localhost:4000/2023/05/28/text-survey</id><content type="html" xml:base="http://localhost:4000/2023/05/28/text-survey.html">&lt;p&gt;This post is a brief survey of the techniques in text detection and recognition.&lt;/p&gt;
 
 &lt;p&gt;Extracting text from images, called text spotting, is arguably the most important technique for extracting information from images. This is because text is the most dense representation of information present in images. Real-world scenes are rich in text and identifying the text present in a scene can vastly improve the understanding of the scene.&lt;/p&gt;
 
