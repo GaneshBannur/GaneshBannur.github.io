@@ -8,8 +8,8 @@
 <meta name="generator" content="Jekyll v3.9.2" />
 <meta property="og:title" content="The (lack of) constraints on MJRTY" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back." />
-<meta property="og:description" content="The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back." />
+<meta name="description" content="The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this article I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back." />
+<meta property="og:description" content="The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this article I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back." />
 <link rel="canonical" href="http://localhost:4000/2023/11/14/mjrty.html" />
 <meta property="og:url" content="http://localhost:4000/2023/11/14/mjrty.html" />
 <meta property="og:site_name" content="Ganesh Bannur" />
@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="The (lack of) constraints on MJRTY" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-14T00:00:00+05:30","datePublished":"2023-11-14T00:00:00+05:30","description":"The MJRTY algorithm, proposed in \\([1]\\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back.","headline":"The (lack of) constraints on MJRTY","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/11/14/mjrty.html"},"url":"http://localhost:4000/2023/11/14/mjrty.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-14T00:00:00+05:30","datePublished":"2023-11-14T00:00:00+05:30","description":"The MJRTY algorithm, proposed in \\([1]\\), is a popular majority voting algorithm that runs in linear time. In this article I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (here) and come back.","headline":"The (lack of) constraints on MJRTY","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/11/14/mjrty.html"},"url":"http://localhost:4000/2023/11/14/mjrty.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Ganesh Bannur" /></head>
 <body><header class="site-header" role="banner">
@@ -56,7 +56,7 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <p>The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this post I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (<a href="/assets/mjrty/paper.pdf"><i>here</i></a>) and come back.</p>
+    <p>The MJRTY algorithm, proposed in \([1]\), is a popular majority voting algorithm that runs in linear time. In this article I’m not going to focus on the algorithm per se but rather on the constraints that are imposed on the algorithm. Specifically I’m going to offer an explanation for why one of the constraints on MJRTY can be removed (the authors mention this but offer no explanation). So read through the paper (<a href="/assets/mjrty/paper.pdf"><i>here</i></a>) and come back.</p>
 
 <p>The paper uses a theorem-prover to prove the correctness of the Fortran implementation of MJRTY. To feed into the theorem-prover, they define the constraints imposed on the algorithm. Two constraints are of interest to us: Constraint \((3)\) and Constraint \((5)\).</p>
 

@@ -4,7 +4,7 @@ title: "Survey of text detection and recognition"
 date: 2023-5-28
 ---
 
-This post is a brief survey of the techniques in text detection and recognition.
+This article is a brief survey of the techniques in text detection and recognition.
 
 Extracting text from images, called text spotting, is arguably the most important technique for extracting information from images. This is because text is the most dense representation of information present in images. Real-world scenes are rich in text and identifying the text present in a scene can vastly improve the understanding of the scene.  
 
@@ -12,7 +12,7 @@ Traditionally text spotting has been divided into text detection and text recogn
 
 > It’s widely believed that end-to-end models enjoy shared feature extraction which leads to better accuracy. However, the results of our competition say otherwise.  
 
-In that spirit the rest of this post gives surveys and comparisons of text detection and recognition techniques. However, keep in mind that only papers with official code implementations were considered since I was surveying techniques to integrate them into a pipeline.
+In that spirit the rest of this article gives surveys and comparisons of text detection and recognition techniques. However, keep in mind that only papers with official code implementations were considered since I was surveying techniques to integrate them into a pipeline.
 
 <br>
 

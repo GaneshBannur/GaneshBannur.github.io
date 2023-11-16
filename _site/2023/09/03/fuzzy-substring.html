@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <title>Ganesh Bannur</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>A fast fuzzy substring algorithm | Ganesh Bannur</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="A fast fuzzy substring algorithm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This article is about an algorithm I came up with for fast fuzzy substring search, i.e., searching for the best match substring of a query in a corpus. Given a query string and a corpus string, the algorithm tries to find the substring in the corpus which is the most similar to the query. The code implementing the algorithm is at https://github.com/GaneshBannur/fuzzy-substring. This article is an extension of the Stackoverflow answer I gave https://stackoverflow.com/a/77019582." />
+<meta property="og:description" content="This article is about an algorithm I came up with for fast fuzzy substring search, i.e., searching for the best match substring of a query in a corpus. Given a query string and a corpus string, the algorithm tries to find the substring in the corpus which is the most similar to the query. The code implementing the algorithm is at https://github.com/GaneshBannur/fuzzy-substring. This article is an extension of the Stackoverflow answer I gave https://stackoverflow.com/a/77019582." />
+<link rel="canonical" href="http://localhost:4000/2023/09/03/fuzzy-substring.html" />
+<meta property="og:url" content="http://localhost:4000/2023/09/03/fuzzy-substring.html" />
+<meta property="og:site_name" content="Ganesh Bannur" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-09-03T00:00:00+05:30" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="A fast fuzzy substring algorithm" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-09-03T00:00:00+05:30","datePublished":"2023-09-03T00:00:00+05:30","description":"This article is about an algorithm I came up with for fast fuzzy substring search, i.e., searching for the best match substring of a query in a corpus. Given a query string and a corpus string, the algorithm tries to find the substring in the corpus which is the most similar to the query. The code implementing the algorithm is at https://github.com/GaneshBannur/fuzzy-substring. This article is an extension of the Stackoverflow answer I gave https://stackoverflow.com/a/77019582.","headline":"A fast fuzzy substring algorithm","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/09/03/fuzzy-substring.html"},"url":"http://localhost:4000/2023/09/03/fuzzy-substring.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Ganesh Bannur" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Ganesh Bannur</a>
+    <a class="github-link" href="https://github.com/GaneshBannur">Github</a>
+    <style>
+      .github-link {
+        position: relative;
+        top: 19px;
+        left: 30px;
+      }
+    </style><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">A fast fuzzy substring algorithm</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-09-03T00:00:00+05:30" itemprop="datePublished">Sep 3, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This article is about an algorithm I came up with for fast fuzzy substring search, i.e., searching for the best match substring of a query in a corpus. Given a query string and a corpus string, the algorithm tries to find the substring in the corpus which is the most similar to the query.<br />
+The code implementing the algorithm is at <a href="https://github.com/GaneshBannur/fuzzy-substring">https://github.com/GaneshBannur/fuzzy-substring</a>.<br />
+This article is an extension of the Stackoverflow answer I gave <a href="https://stackoverflow.com/a/77019582">https://stackoverflow.com/a/77019582</a>.</p>
+
+<p>A naive approach would be to go through every substring of the corpus and find the most similar one, however this would be too slow for large corpora. Instead the algorithm focuses on speed while providing the optimal result in most cases. It is not possible to guarantee that the result is optimal without some level of brute forcing, which slows down the search significantly. This is because at some point (after possibly narrowing down the search region in the corpus) such an algorithm would have to check every substring. Hence this algorithm does not provide that guarantee but it has been seen empirically that it provides the optimal result in most cases. At some point I’ll add the theoretical characterization of the failure cases.</p>
+
+<p>The first step is to define what it means for a substring of the corpus to be similar to the query. Any one of the plethora of string similarity/distance measures can be used in this algorithm. Once the measure is decided, the definition of the closest substring is as follows: The substring of the corpus which has the lowest distance (for distance measures) or highest similarity (for similarity measures) with the query.</p>
+
+<p>I tested two measures: Levenshtein distance and Ratcliff-Obershelp similarity (specifically the <code class="language-plaintext highlighter-rouge">ratio</code> function in Python’s <code class="language-plaintext highlighter-rouge">difflib</code> module). Empirically Levenshtein distance was found to work best for two reasons:</p>
+<ul>
+  <li>It provides more accurate results</li>
+  <li>It is extremely fast to compute</li>
+</ul>
+
+<p>Now it is easy to define the most similar substring: The substring of the corpus most similar to the query is the one which has the lowest Levenshtein distance from it.</p>
+
+<p>The algorithm finds the best substring match in two stages</p>
+<ol>
+  <li>First it  performs a quick low resolution scan over the corpus to identify the general region of the corpus in which the best match may exist</li>
+  <li>Second it performs multiple high resolution scans over the region identified to try and find the exact substring that is the  best match</li>
+</ol>
+
+<p>Resolution here includes the step size and window size of the sliding window scan. The low resolution scan will have a high step size and high window size. The high resolution scan will have a low step size and low window size. Multiple high resolution scans with varying window sizes and <code class="language-plaintext highlighter-rouge">step size = 1</code> are performed to be able to identify the best match exactly, regardless of its length or position in the region identified.</p>
+
+<p><br /></p>
+<h1 id="first-stage-low-resolution-scan">First Stage (low resolution scan)</h1>
+<p>The first stage constructs substrings of the same size as the query using a sliding window over the corpus (the sliding window moves forward by <code class="language-plaintext highlighter-rouge">step</code> every time). The substrings constructed would be</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>corpus[0 ... query_len - 1], corpus[step ... step + query_len - 1], corpus[2*step ... 2*step + query_len - 1], .....
+</code></pre></div></div>
+
+<p>The best value for <code class="language-plaintext highlighter-rouge">step</code> is empirically found to be <code class="language-plaintext highlighter-rouge">step = query_len//2</code> (<code class="language-plaintext highlighter-rouge">//</code> is integer division). This value of <code class="language-plaintext highlighter-rouge">step</code> works well because it provides a balance between speed and accuracy: a smaller step size would decrease speed and a larger step size may miss regions of the corpus. The smallest step size possible is 1. It gives the best accuracy as every substring of the corpus of length <code class="language-plaintext highlighter-rouge">query_len</code> is considered. It is also the slowest for the same reason. The largest step size possible is <code class="language-plaintext highlighter-rouge">query_len</code>, any larger than this and the scan would miss parts of the corpus. It gives the fastest scan since it takes large steps. It also has the worst accuracy for the same reason. A step size of <code class="language-plaintext highlighter-rouge">query_len//2</code> sits between the smallest and largest step sizes, giving it a balance between speed and accuracy.</p>
+
+<p>The substrings constructed with <code class="language-plaintext highlighter-rouge">step = query_len//2</code> are (assuming <code class="language-plaintext highlighter-rouge">query_len</code> is divisible by two for simplicity)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>corpus[0 ... query_len - 1], corpus[query_len/2 ... 1.5*query_len - 1], corpus[query_len ... 2*query_len - 1], .....
+</code></pre></div></div>
+
+<p>The first stage scans over the corpus by constructing these substrings. The substring with the minimum Levenshtein distance from the query is found. This substring gives the region of the corpus around which the best match will most likely exist. The first stage serves the purpose of narrowing down the search region in the corpus. Once the region is found by the first stage it is doubled in length by considering <code class="language-plaintext highlighter-rouge">query_len//2</code> characters to both the left and right of the region. If the first stage narrowed down to <code class="language-plaintext highlighter-rouge">corpus[i ... i + query_len - 1]</code> then the search region for the second stage is <code class="language-plaintext highlighter-rouge">corpus[i - query_len//2 ... i + query_len - 1 + query_len//2]</code>. This gives us a region of length <code class="language-plaintext highlighter-rouge">query_len//2 (left extension) + query_len (first scan gives region of length = query_len) + query_len//2 (right extension) = 2*query_len</code>. The region is expanded to account for the error in identifying the exact region (since the first scan was a low resolution scan that jumped over the corpus with steps of <code class="language-plaintext highlighter-rouge">query_len//2</code>)</p>
+
+<p><br /></p>
+<h1 id="second-stage-high-resolution-scans">Second Stage (high resolution scans)</h1>
+<p>The second stage performs a more thorough search over the region identified (called <code class="language-plaintext highlighter-rouge">narrowed_corpus</code> in the code). This is done by constructing substrings of varying lengths over <code class="language-plaintext highlighter-rouge">narrowed_corpus</code> with <code class="language-plaintext highlighter-rouge">step = 1</code>. This is equivalent to performing multiple scans over <code class="language-plaintext highlighter-rouge">narrowed_corpus</code>, each one with a different window size and <code class="language-plaintext highlighter-rouge">step = 1</code> for the sliding window. Multiple scans are performed to consider more substrings of varying positions and lengths within <code class="language-plaintext highlighter-rouge">narrowed_corpus</code>, increasing our chances of finding the optimal solution.</p>
+
+<p>Now we need to decide what substring lengths to consider. To decide this, we first narrow down the range of values considered using the following result.</p>
+<blockquote>
+  <p>The best match string <code class="language-plaintext highlighter-rouge">s</code>, which has the least Levenshtein distance from the query, has length <code class="language-plaintext highlighter-rouge">l</code> which satisfies <code class="language-plaintext highlighter-rouge">l &lt;= 2*query_len</code>.</p>
+</blockquote>
+
+<p>The proof of this result is as follows</p>
+
+<p><strong><em>Proof</em></strong></p>
+
+<hr />
+
+<p>We can show that no string of length more than <code class="language-plaintext highlighter-rouge">2*query_len</code> can have the minimum Levenshtein distance from the query.
+Let <code class="language-plaintext highlighter-rouge">s = corpus[i ... i + l - 1]</code> be the <code class="language-plaintext highlighter-rouge">s</code> defined in the result.</p>
+
+<p>The Levenshtein distance of <code class="language-plaintext highlighter-rouge">s</code> from the query is the number of insertions, deletions and substitutions required to convert <code class="language-plaintext highlighter-rouge">s</code> to <code class="language-plaintext highlighter-rouge">query</code>. This has two components</p>
+<ol>
+  <li>Substitution of characters in <code class="language-plaintext highlighter-rouge">s</code>, if some <strong><em>subsequence</em></strong> of <code class="language-plaintext highlighter-rouge">s</code> does not match <code class="language-plaintext highlighter-rouge">query</code> exactly</li>
+  <li>Removal of <code class="language-plaintext highlighter-rouge">l - query_len</code> extra characters from <code class="language-plaintext highlighter-rouge">s</code>, since it is longer than the query</li>
+</ol>
+
+<p>Considering only the second part tells us that the Levenshtein distance must be <code class="language-plaintext highlighter-rouge">&gt; query_len</code> since <code class="language-plaintext highlighter-rouge">l &gt; 2*query_len =&gt; l - query_len &gt; query_len</code>. But any string of length <code class="language-plaintext highlighter-rouge">&lt;= query_len</code> can be converted to <code class="language-plaintext highlighter-rouge">query</code> with <code class="language-plaintext highlighter-rouge">&lt;= query_len</code> insertions and substitutions. So no string of length <code class="language-plaintext highlighter-rouge">&gt; 2*query_len</code> can be the best match since.</p>
+
+<hr />
+
+<p><br /></p>
+
+<p>The result imposes a theoretical upper limit on the substring lengths we should consider.
+We can also impose a heuristic lower limit on the substring lengths by using the result. We can consider only substrings with length <code class="language-plaintext highlighter-rouge">&gt; query_len/2</code>. Let <code class="language-plaintext highlighter-rouge">s</code> be a substring with length <code class="language-plaintext highlighter-rouge">l</code> such that <code class="language-plaintext highlighter-rouge">l &lt; query_len/2</code> (assume it’s divisible by 2). Since <code class="language-plaintext highlighter-rouge">query_len &gt; 2*l</code>, the result tells us that <code class="language-plaintext highlighter-rouge">query</code> cannot be the best match for <code class="language-plaintext highlighter-rouge">s</code>. Note that <code class="language-plaintext highlighter-rouge">s</code> may still be the best match for <code class="language-plaintext highlighter-rouge">query</code>, it is just that there is some other substring in <code class="language-plaintext highlighter-rouge">corpus</code> which is a better match for <code class="language-plaintext highlighter-rouge">s</code> than <code class="language-plaintext highlighter-rouge">query</code> is. But empirically we can assume that if <code class="language-plaintext highlighter-rouge">query</code> is not the best match for <code class="language-plaintext highlighter-rouge">s</code> then <code class="language-plaintext highlighter-rouge">s</code> is probably not the best match for <code class="language-plaintext highlighter-rouge">query</code> (of course, this need not always be true). But assuming this gives us the lower bound on substring lengths as <code class="language-plaintext highlighter-rouge">query_len//2</code>. Empirically this assumption is found to not affect the optimality of the result in most cases.</p>
+
+<p>But here’s an example of when this assumption causes the algorithm to be non-optimal:<br />
+Input</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query = "philanthropic"
+corpus = "bbbbbbbbbbbbbbphiicbbbbbbbbbbbbbb"
+</code></pre></div></div>
+
+<p>Optimal Output</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Best Match: "phiic"
+Minimum Levenshtein distance: 8
+</code></pre></div></div>
+
+<p>Actual Output</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Best Match: "bphiic"
+Minimum Levenshtein distance: 9
+</code></pre></div></div>
+
+<p><strong><em>Characterizing the failures because of this assumption</em></strong></p>
+
+<hr />
+
+<p>Even when the best match has length <code class="language-plaintext highlighter-rouge">&lt; query_len/2</code>, the assumption does not cause the algorithm to be non-optimal in one specific case: when the best match is a <strong><em>substring</em></strong> of <code class="language-plaintext highlighter-rouge">query</code> and not just a <strong><em>subsequence</em></strong>. The example failure given above occurs because <code class="language-plaintext highlighter-rouge">"phiic"</code> is a subsequence of <code class="language-plaintext highlighter-rouge">"philanthropic"</code> but not a substring. This means some characters need to be filled <em>in between</em> the characters (rather than appending extra characters to a side) of <code class="language-plaintext highlighter-rouge">"phiic"</code> to get <code class="language-plaintext highlighter-rouge">"phi</code><em><code class="language-plaintext highlighter-rouge">lanthrop</code></em><code class="language-plaintext highlighter-rouge">ic"</code>. If however the best match is a substring of <code class="language-plaintext highlighter-rouge">query</code> then we can find a substring with length <code class="language-plaintext highlighter-rouge">&gt; query_len/2</code> that has the same Levenshtein distance.<br />
+Let <code class="language-plaintext highlighter-rouge">s</code>, a substring of <code class="language-plaintext highlighter-rouge">query</code>, be the best match with length <code class="language-plaintext highlighter-rouge">&lt; query_len/2</code>. Then to convert <code class="language-plaintext highlighter-rouge">s</code> to <code class="language-plaintext highlighter-rouge">query</code> we would simply need to add the remaining characters of <code class="language-plaintext highlighter-rouge">query</code> to the sides of <code class="language-plaintext highlighter-rouge">s</code>. This would give us a Levenshtein distance of <code class="language-plaintext highlighter-rouge">query_len - s_len</code>. As an example, consider the failure case. If instead the corpus was <code class="language-plaintext highlighter-rouge">"bbbbbbbbbbbbbblanthbbbbbbbbbbbbbb"</code>, the best match <code class="language-plaintext highlighter-rouge">"lanth"</code> would be a substring of <code class="language-plaintext highlighter-rouge">"philanthropic"</code> and we would only need to add characters to the sides (<em><code class="language-plaintext highlighter-rouge">"phi</code></em><code class="language-plaintext highlighter-rouge">lanth</code><em><code class="language-plaintext highlighter-rouge">ropic"</code></em>).<br />
+Suppose <code class="language-plaintext highlighter-rouge">n</code> characters need to be added to the left of <code class="language-plaintext highlighter-rouge">s</code> and <code class="language-plaintext highlighter-rouge">m</code> characters to the right to convert it to <code class="language-plaintext highlighter-rouge">query</code>. In this case we can find another substring of <code class="language-plaintext highlighter-rouge">corpus</code> which adds <code class="language-plaintext highlighter-rouge">n</code> and <code class="language-plaintext highlighter-rouge">m</code> characters of <strong><em><code class="language-plaintext highlighter-rouge">corpus</code></em></strong> to <code class="language-plaintext highlighter-rouge">s</code>. If <code class="language-plaintext highlighter-rouge">s = corpus[i ... i + s_len - 1]</code> then the new substring would be <code class="language-plaintext highlighter-rouge">s' = corpus[i - n ... i + s_len - 1 + m]</code> (in our example <code class="language-plaintext highlighter-rouge">s' = "</code><em><code class="language-plaintext highlighter-rouge">bbb</code></em><code class="language-plaintext highlighter-rouge">lanth</code><em><code class="language-plaintext highlighter-rouge">bbbbb</code></em><code class="language-plaintext highlighter-rouge">"</code>). <code class="language-plaintext highlighter-rouge">s'</code> would have the same Levenshtein distance as <code class="language-plaintext highlighter-rouge">s</code> since instead of adding <code class="language-plaintext highlighter-rouge">n</code> and <code class="language-plaintext highlighter-rouge">m</code> characters to <code class="language-plaintext highlighter-rouge">s</code>, we can instead substitute the <code class="language-plaintext highlighter-rouge">n</code> and <code class="language-plaintext highlighter-rouge">m</code> extra characters in <code class="language-plaintext highlighter-rouge">s'</code> to get <code class="language-plaintext highlighter-rouge">query</code>. But we could not have done the same if <code class="language-plaintext highlighter-rouge">s</code> was a subsequence and not a substring of <code class="language-plaintext highlighter-rouge">query</code> and required insertions <em>in between</em> characters.</p>
+
+<hr />
+
+<p><br /></p>
+
+<p>In light of this, the second stage does not consider any substring of length <code class="language-plaintext highlighter-rouge">&lt; query_len//2</code> or <code class="language-plaintext highlighter-rouge">&gt; 2*query_len</code>. So the lengths of substrings considered for the multiple high resolution scans range from <code class="language-plaintext highlighter-rouge">query_len//2</code> to <code class="language-plaintext highlighter-rouge">2*query_len</code>.</p>
+
+<p>We have established the range of substring lengths that we will consider. The next step is to decide which substring lengths to consider. The second stage considers substring lengths at fixed intervals between <code class="language-plaintext highlighter-rouge">query_len//2</code> and <code class="language-plaintext highlighter-rouge">2*query_len</code>. The intervals are defined by <code class="language-plaintext highlighter-rouge">step = query_len//step_factor</code>. The lengths of substrings constructed depend on the argument <code class="language-plaintext highlighter-rouge">step_factor</code>. The lengths considered are</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>len(query)//2 - 1, len(query)//2 - 1 + step, len(query)//2 - 1 + 2*step, ....., 2 * len(query) + 2
+</code></pre></div></div>
+
+<p>The second stage considers lengths at intervals as considering all lengths between <code class="language-plaintext highlighter-rouge">query_len//2</code> and <code class="language-plaintext highlighter-rouge">2*query_len</code> would slow it down significantly.<br />
+Empirically <code class="language-plaintext highlighter-rouge">step_factor = 128</code> works well, compromising between speed and chances of an optimal solution. Using this value, the lengths considered are</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>len(query)//2 - 1, len(query)//2 - 1 + query_len//128, len(query)//2 - 1 + 2*query_len//128, ....., 2 * len(query) + 2
+</code></pre></div></div>
+
+<p>Increasing <code class="language-plaintext highlighter-rouge">step_factor</code> increases the number of substring lengths considered hence increasing the chances of finding the optimal substring with minimum Levenshtein distance. However increasing it will lead to increased runtime because more substrings need to be checked.</p>
+
+<p><br /></p>
+
+<p>A final consideration in the algorithm is the preference for smaller or larger matches. Among all the substrings that the algorithm ends up searching, more than one may have minimum Levenshtein distance. The algorithm can return a list of all the substrings which have the same distance (the minimum distance). However when implementing the algorithm practically it is nice to return one substring as the best match. In this case we have to choose which substring from the list we return. Empirically it is found to be better to prefer the largest match. Perhaps because it is easier for people to skip over extraneous characters in a larger match than fill in missing characters in a smaller match.</p>
+
+<p><br /></p>
+<h1 id="an-example-of-the-algorithm">An example of the algorithm</h1>
+
+<p>Input</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query = "ipsum dolor"
+corpus = "lorem 1psum dlr sit amet"
+</code></pre></div></div>
+
+<p>Output</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Best match: "1psum dlr"
+Minimum Levenshtein distance: 3
+</code></pre></div></div>
+
+<p><br /></p>
+<h1 id="example-that-breaks-the-algorithm">Example that breaks the algorithm</h1>
+<p>This is an example which misdirects the first stage of the algorithm and causes it to select the wrong region, making the end result of the algorithm entirely wrong.</p>
+
+<p>Input (note the extra spaces)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query: "antidisestablishmentarianism"
+corpus: "    anidietabishetariism    antidbmjrietabishetariism   "
+</code></pre></div></div>
+
+<p>Optimal Output</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Best match: "anidietabishetariism"
+Minimum Levenshtein distance: 8
+</code></pre></div></div>
+
+<p>Actual Output</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Best match: "antidbmjrietabishetariism"
+Minimum Levenshtein distance: 11
+</code></pre></div></div>
+
+  </div><a class="u-url" href="/2023/09/03/fuzzy-substring.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/GaneshBannur"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">GaneshBannur</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Ganesh Bannur</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

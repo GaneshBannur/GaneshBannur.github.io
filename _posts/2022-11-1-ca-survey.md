@@ -4,7 +4,7 @@ title: "Conversational Agents: A survey of techniques, frameworks and datasets"
 date: 2022-11-1
 ---
 
-This post is a survey of conversational agents that I did when I was working to build one myself.  
+This article is a survey of conversational agents that I did when I was working to build one myself.  
 <br>
 # Architecture
 The general architecture of a conversational agent is given in *Figure 1*. Traditional techniques follow this architectural division closely and implement specialized modules for each component of the agent. However it is becoming increasingly common to combine one or more components in favour of more end-to-end conversational agents. This is especially true when using large deep learning models as they are able to implement more than one component, often with better results due to information sharing between the tasks of individual components.
